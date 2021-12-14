@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>Página inicial</title>
+    <link rel="icon" href="/images/wine.png">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+    <script src="/javascripts/script.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <link type="text/css" rel="stylesheet" href="/stylesheets/lightslider.css" />
+    <script src="/javascripts/lightslider.js"></script>
+</head>
+<nav class="navbar navbar-light bg-light justify-content-between">
+    <li class="nav-item">
+        <a href="/" class="navbar-brand icon-navbar"><img src="/images/wine.png"></a>
+    </li>
+    <form class="form-inline">
+        <% if(user.nome==undefined){ %>
+            <a id="se_cadastre" href="/login">
+                Se cadastre ou faça login
+            </a>
+            <% } else{ %>
+                <li class="nav-item dropdown nav-bar-logado">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Olá, <%= user.nome %>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/myWines">Meus vinhos</a>
+                        <a class="dropdown-item" href="/addWine">Cadastrar Vinho</a>
+                        <a class="dropdown-item" href="/logout">Sair</a>
+                    </div>
+                </li>
+                <% } %>
+    </form>
+</nav>
+
+<body>
+    <section id="content">
+
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_filtros">Filtros
+            avançados</button>
+
+        <div class="item pt-3">
+            <ul id="content-slider" class="content-slider">
+                <% var count=0; vinhos.forEach(function(vinho){ %>
+                    <li style="padding: 2%; grid-gap: 50px; text-decoration: none;">
+                        <div class="card" style="width: 100%; padding:2%; border-radius: 10px;">
+                            <form id=<%="formulario_vinho" + count %> action=<%= "/searchWine/" + vinho._id %>
+                                    method="get">
+                                    <a onclick="document.getElementById('formulario_vinho<%=count%>').submit();">
+                                        <img style="width: 100%;" src="/images/wineImages/<%=vinho.imagem%>">
+                                        <div class="card-body">
+                                            <h3 class="card-title">
+                                                <%= vinho.nome %>
+                                            </h3>
+                                            <p class="card-text">
+                                            <p><b>Produtor:</b>
+                                                <%= vinho.produtor %>
+                                            </p>
+                                            <p><b>Tipo de vinho:</b>
+                                                <%= vinho.tipo_vinho %>
+                                            </p>
+                                            <p><b>Tipo de uva:</b>
+                                                <%= vinho.tipo_uva %>
+                                            </p>
+                                            <p><b>Nota:</b>
+                                                <%= vinho.nota.toFixed(1) %>/5
+                                            </p>
+                                            <p><b>
+                                                    <%= vinho.qtd_comentarios %>
+                                                </b> avaliações</p>
+                                            </p>
+                                        </div>
+                                    </a>
+                            </form>
+                        </div>
+                    </li>
+                    <% count++; }) %>
+            </ul>
+        </div>
+    </section>
+    <div id="modal_filtros" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
+        data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="/" method="post">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Filtros</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="nome">Nome do Vinho</label>
+                            <input type="text" class="form-control" name="nome" id="nome"
+                                placeholder="Insira o nome do vinho">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="produtor">Produtor do vinho</label>
+                            <input type="text" class="form-control" name="produtor" id="produtor"
+                                placeholder="Insira o produtor">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pais_origem">Pais de origem</label>
+                            <input type="text" class="form-control" name="pais_origem" id="pais_origem"
+                                placeholder="Insira o país de origem">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipo_vinho">Tipo de Vinho</label>
+                            <input type="text" class="form-control" name="tipo_vinho" id="tipo_vinho"
+                                placeholder="Insira sua avaliação">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipo_uva">Tipo de Uva</label>
+                            <input type="text" class="form-control" name="tipo_uva" id="tipo_uva"
+                                placeholder="Insira sua avaliação">
+                        </div>
+
+                        <label for="nota">Nota</label>
+                        <select name="nota" class="custom-select">
+                            <option selected value="todas">Todas</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" type='submit'>Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+        $("#content-slider").lightSlider({
+            item: 4,
+            autoWidth: false,
+            slideMove: 1,
+            slideMargin: 10,
+
+            addClass: '',
+            mode: "slide",
+            useCSS: true,
+            cssEasing: 'ease', //'cubic-bezier(0.25, 0, 0.25, 1)',//
+            easing: 'linear', //'for jquery animation',////
+
+            speed: 400, //ms'
+            auto: false,
+            loop: false,
+            slideEndAnimation: true,
+            pause: 2000,
+
+            keyPress: false,
+            controls: true,
+            prevHtml: '',
+            nextHtml: '',
+
+            rtl: false,
+            adaptiveHeight: false,
+
+            vertical: false,
+            verticalHeight: 500,
+            vThumbWidth: 100,
+
+            thumbItem: 10,
+            pager: true,
+            gallery: false,
+            galleryMargin: 5,
+            thumbMargin: 5,
+            currentPagerPosition: 'middle',
+
+            enableTouch: true,
+            enableDrag: true,
+            freeMove: true,
+            swipeThreshold: 40,
+
+            responsive: [],
+
+            onBeforeStart: function (el) { },
+            onSliderLoad: function (el) { },
+            onBeforeSlide: function (el) { },
+            onAfterSlide: function (el) { },
+            onBeforeNextSlide: function (el) { },
+            onBeforePrevSlide: function (el) { }
+        });
+    </script>
+</body>
+
+</html>

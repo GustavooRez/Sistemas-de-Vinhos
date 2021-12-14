@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>Criar vinho</title>
+    <link rel="icon" href="/images/wine.png">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+    <script src="/javascripts/script.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+<nav class="navbar navbar-light bg-light justify-content-between">
+    <li class="nav-item">
+        <a href="/" class="navbar-brand icon-navbar"><img src="/images/wine.png"></a>
+    </li>
+    <form class="form-inline">
+        <% if(user.nome==undefined){ %>
+            <a id="se_cadastre" href="/login">
+                Se cadastre ou faça login
+            </a>
+            <% } else{ %>
+                <li class="nav-item dropdown nav-bar-logado">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Olá, <%= user.nome %>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/myWines">Meus vinhos</a>
+                        <a class="dropdown-item" href="/addWine">Cadastrar Vinho</a>
+                        <a class="dropdown-item" href="/logout">Sair</a>
+                    </div>
+                </li>
+                <% } %>
+    </form>
+</nav>
+
+<body>
+
+    <% if(user.nome==undefined){ %>
+
+        <div class="text-center pt-3">
+            <h2>Faça login para cadastrar um vinho</h2>
+        </div>
+
+        <% }else{ %>
+
+            <div class="container" style="padding: 2%;">
+                <form action="/createWine" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name_wine">Nome</label>
+                        <input type="text" class="form-control" name="nome_vinho" id="name_wine"
+                            placeholder="Insira o nome do vinho" required>
+                    </div>
+                    <div>
+                        <p>Nomes de vinhos já cadastrados anteriormente: <%=nomeVinhos%>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="pais_origem">País de origem</label>
+                        <input type="text" class="form-control" name="pais_origem" id="pais_origem"
+                            placeholder="Insira o país de origem do vinho" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtor">Produtor</label>
+                        <input type="text" class="form-control" name="produtor" id="produtor"
+                            placeholder="Insira o nome do produtor do vinho" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_vinho">Tipo</label>
+                        <input type="text" class="form-control" name="tipo_vinho" id="tipo_vinho"
+                            placeholder="Insira o tipo do vinho" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_uva">Tipo da Uva</label>
+                        <input type="text" class="form-control" name="tipo_uva" id="tipo_uva"
+                            placeholder="Insira o tipo de uva" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="harmonizacao_comida">Harmonização com comidas</label>
+                        <input type="text" class="form-control" name="harmonizacao_comida" id="harmonizacao_comida"
+                            placeholder="Insira uma harmonização com comida do vinho" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="photo">Imagem</label>
+                        <input type="file" class="form-control" name="foto" id="photo" required>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-danger">Cadastrar vinho</button>
+                    </div>
+                </form>
+            </div>
+            <% }%>
+</body>
+
+</html>

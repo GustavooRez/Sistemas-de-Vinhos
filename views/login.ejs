@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>Login</title>
+    <link rel="icon" href="/images/wine.png">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+    <script src="/javascripts/script.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+<nav class="navbar navbar-light bg-light justify-content-between">
+    <li class="nav-item">
+        <a href="/" class="navbar-brand icon-navbar"><img src="/images/wine.png"></a>
+    </li>
+</nav>
+
+<body>
+
+    <div class="grid-login">
+        <div class="container">
+            <% if(login_false==true){ %>
+                <div class="alert alert-danger">
+                    <p>Usuário não encontrado!</p>
+                </div>
+                <% } %>
+                    <h2 class="login-title">Realize o seu login</h2>
+                    <form id="formulario-login" action="/searchUserLogin" method="post">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" name="email" id="email"
+                                aria-describedby="emailHelp" placeholder="Insira seu email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Senha</label>
+                            <input type="password" class="form-control" name="senha" id="password"
+                                placeholder="Insira sua senha" required>
+                        </div>
+                        <div class="pt-2 pb-4">
+                            <a>Ainda não é cadastrado? <a id="se_cadastre" href="/createUser">Clique aqui</a></a>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-danger">Enviar</button>
+                        </div>
+                    </form>
+        </div>
+        <div>
+            <img id="imagem-grid-login" src="/images/vinho-login.jpg">
+        </div>
+    </div>
+
+</body>
+
+</html>

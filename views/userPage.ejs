@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>
+        <%= usuario['nome'] %>
+    </title>
+    <link rel="icon" href="/images/wine.png">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+    <script src="/javascripts/script.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</head>
+<nav class="navbar navbar-light bg-light justify-content-between">
+    <li class="nav-item">
+        <a href="/" class="navbar-brand icon-navbar"><img src="/images/wine.png"></a>
+    </li>
+    <form class="form-inline">
+        <% if(user.nome==undefined){ %>
+            <a id="se_cadastre" href="/login">
+                Se cadastre ou faça login
+            </a>
+            <% } else{ %>
+                <li class="nav-item dropdown nav-bar-logado">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Olá, <%= user.nome %>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/myWines">Meus vinhos</a>
+                        <a class="dropdown-item" href="/addWine">Cadastrar Vinho</a>
+                        <a class="dropdown-item" href="/logout">Sair</a>
+                    </div>
+                </li>
+                <% } %>
+    </form>
+</nav>
+
+<body>
+    <div class="wine-page">
+        <div id="content" class="container">
+            <h1 class="text-center">
+                <%=usuario.nome%>
+            </h1>
+        </div>
+
+        <div id="content">
+            <h2>Avaliações feitas pelo usuário</h2>
+            <div class="grid-wine-page">
+                <% var count=0; comentarios.forEach(function(comentario){ %>
+                    <div class=" py-3">
+                        <div class="card" style="width: 100%; padding:2%; border-radius: 10px;">
+                            <div class="card-body">
+                                <h5 class="card-title d-flex justify-content-around">
+                                    <div>
+                                        <%=comentario.user_name%>
+                                    </div>
+                                    <div>
+                                        <%=comentario.nota%>/5
+                                    </div>
+                                </h5>
+                                <div class="card-text py-2">
+                                    <p>
+                                        <%= comentario.comentario %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <%count++; }) %>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

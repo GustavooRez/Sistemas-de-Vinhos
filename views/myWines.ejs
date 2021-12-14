@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>Meus vinhos</title>
+    <link rel="icon" href="/images/wine.png">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+    <script src="/javascripts/script.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</head>
+<nav class="navbar navbar-light bg-light justify-content-between">
+    <li class="nav-item">
+        <a href="/" class="navbar-brand icon-navbar"><img src="/images/wine.png"></a>
+    </li>
+    <form class="form-inline">
+        <% if(user.nome==undefined){ %>
+            <a id="se_cadastre" href="/login">
+                Se cadastre ou faça login
+            </a>
+            <% } else{ %>
+                <li class="nav-item dropdown nav-bar-logado">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Olá, <%= user.nome %>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/myWines">Meus vinhos</a>
+                        <a class="dropdown-item" href="/addWine">Cadastrar Vinho</a>
+                        <a class="dropdown-item" href="/logout">Sair</a>
+                    </div>
+                </li>
+                <% } %>
+    </form>
+</nav>
+
+<body>
+    <% if(user.nome==undefined){ %>
+
+
+        <div class="text-center pt-3">
+            <h2>Faça login para acessar seus vinhos</h2>
+        </div>
+
+        <% }else{ %>
+
+            <% if(vinhos.length==0){ %>
+
+                <div class="text-center pt-3">
+                    <div class="py-2">
+                        <h2>Você não possui nenhum vinho cadastrado</h2>
+                    </div>
+                    <div class="py-3"><a href="/addWine">Cadastre um vinho clicando aqui</a></div>
+                </div>
+
+                <% } else{ %>
+
+                    <div id="content" class="grid-my-wines">
+                        <% var count=0; vinhos.forEach(function(vinho){ %>
+
+                            <div class="card" style="width: 100%; padding:2%; border-radius: 10px;">
+                                <form id=<%="formulario_vinho" + count %> action=<%= "/searchWine/" + vinho._id %>
+                                        method="get">
+                                        <a onclick="document.getElementById('formulario_vinho<%=count%>').submit();">
+                                            <img style="width: 100%;" src="/images/wineImages/<%=vinho.imagem%>">
+                                            <div class="card-body">
+                                                <h3 class="card-title">
+                                                    <%= vinho.nome %>
+                                                </h3>
+                                                <p class="card-text">
+                                                <p>
+                                                    <%= vinho.produtor %>, <%= vinho.pais_origem %>, <%=
+                                                                vinho.tipo_vinho %>, <%= vinho.tipo_uva %>
+                                                </p>
+                                                <p>
+                                                    <%= vinho.nota %>/5
+                                                </p>
+                                                </p>
+                                            </div>
+                                        </a>
+                                </form>
+                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                    data-target="#modal_avaliacao_<%=count%>">Avaliar</button>
+                            </div>
+
+                            <div id="modal_avaliacao_<%=count%>" class="modal fade" tabindex="-1" role="dialog"
+                                aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action=<%="/addReview/" + vinho._id %> method="post">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Avaliação</h4>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <div class="form-group">
+                                                    <label for="comentario">Avaliação</label>
+                                                    <input type="text" class="form-control" name="comentario"
+                                                        id="comentario"
+                                                        placeholder="Insira o comentário da sua avaliação" required>
+                                                </div>
+
+                                                <label for="nota">Nota</label>
+                                                <select id="nota" name="nota" class="custom-select">
+                                                    <option value="0">0</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" type="button"
+                                                    data-dismiss="modal">Cancelar</button>
+                                                <button class="btn btn-primary" type='submit'>Enviar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <%count++; })%>
+                    </div>
+                    <% } %>
+                        <% } %>
+</body>
+
+</html>
