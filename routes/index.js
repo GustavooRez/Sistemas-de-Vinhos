@@ -2,7 +2,6 @@ var express = require("express");
 var mongoose = require("mongoose");
 var router = express.Router();
 var db = require("../db");
-const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const SECRET = "_d41d8cd98f00b204e9800998ecf8427e_";
 mongoose.connect(
@@ -15,26 +14,6 @@ mongoose.connect(
     useCreateIndex: true,
   }
 );
-// Configuração de armazenamento
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/images/wineImages/");
-  },
-  filename: function (req, file, cb) {
-    // Extração da extensão do arquivo original:
-    const extensaoArquivo = file.originalname.split(".")[1];
-
-    // Indica o novo nome do arquivo:
-    cb(
-      null,
-      `${file.originalname
-        .split(".")[0]
-        .replace(/\s+/g, "")}.${extensaoArquivo}`
-    );
-  },
-});
-
-const upload = multer({ storage });
 
 var Users = db.Mongoose.model(
   "usercollection",
@@ -169,7 +148,7 @@ router.get("/myWines", function (req, res, next) {
 });
 
 //Rota pra criar um vinho
-router.post("/createWine", upload.single("foto"), (req, res) => {
+router.post("/createWine", (req, res) => {
   Wines.findOne({ nome: req.body.nome_vinho }, function (err, result) {
     if (err) {
       console.log(err);
@@ -177,10 +156,7 @@ router.post("/createWine", upload.single("foto"), (req, res) => {
       if (result !== null) {
         let wine_result = JSON.parse(JSON.stringify(result).toString());
 
-        (result.imagem =
-          req.file.originalname.split(".")[0].replace(/\s+/g, "") +
-          "." +
-          req.file.originalname.split(".")[1]),
+          (result.imagem = req.body.foto_wine),
           (result.pais_origem = req.body.pais_origem),
           (result.produtor = req.body.produtor),
           (result.tipo_vinho = req.body.tipo_vinho),
@@ -221,10 +197,7 @@ router.post("/createWine", upload.single("foto"), (req, res) => {
       } else {
         var wine = new Wines({
           nome: req.body.nome_vinho,
-          imagem:
-            req.file.originalname.split(".")[0].replace(/\s+/g, "") +
-            "." +
-            req.file.originalname.split(".")[1],
+          imagem: req.body.foto_wine,
           pais_origem: req.body.pais_origem,
           produtor: req.body.produtor,
           tipo_vinho: req.body.tipo_vinho,
@@ -428,16 +401,13 @@ router.post("/addReview/:wine_id", (req, res, next) => {
 //Rotas de vinhos tela principal
 //Se houver parametros, ele personaliza a busca
 router.get("/", function (req, res, next) {
-  console.log("1");
 
   Wines.find({}, function (erro_vinho, doc_vinho) {
     if (erro_vinho) {
       throw erro_vinho;
     } else {
-      console.log("2");
       let resultadoVinhos = JSON.parse(JSON.stringify(doc_vinho).toString());
 
-      console.log("3");
       res.render("index", { user: userGlobal, vinhos: resultadoVinhos });
     }
   });
@@ -486,8 +456,6 @@ router.post("/", function (req, res, next) {
   if (conditions.$or.length == 0) {
     delete conditions["$or"];
   }
-
-  console.log(conditions);
 
   Wines.find(conditions, function (erro_vinho, doc_vinho) {
     if (erro_vinho) {

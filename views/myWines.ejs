@@ -71,7 +71,7 @@
                                 <form id=<%="formulario_vinho" + count %> action=<%= "/searchWine/" + vinho._id %>
                                         method="get">
                                         <a onclick="document.getElementById('formulario_vinho<%=count%>').submit();">
-                                            <img style="width: 100%;" src="/images/wineImages/<%=vinho.imagem%>">
+                                            <img style="width: 100%;" src=<%=vinho.imagem%>>
                                             <div class="card-body">
                                                 <h3 class="card-title">
                                                     <%= vinho.nome %>

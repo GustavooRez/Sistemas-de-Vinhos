@@ -54,7 +54,7 @@
         <% }else{ %>
 
             <div class="container" style="padding: 2%;">
-                <form action="/createWine" method="post" enctype="multipart/form-data">
+                <form action="/createWine" method="post" >
                     <div class="form-group">
                         <label for="name_wine">Nome</label>
                         <input type="text" class="form-control" name="nome_vinho" id="name_wine"
@@ -91,7 +91,8 @@
                     </div>
                     <div class="form-group">
                         <label for="photo">Imagem</label>
-                        <input type="file" class="form-control" name="foto" id="photo" required>
+                        <input type="file" class="form-control" name="foto" id="photo"  onchange="encodeImageFileAsURL(this);" required>
+                        <input type="hidden" class="form-control" name="foto_wine" id="photo_wine"  onchange="encodeImageFileAsURL(this);" required>
                     </div>
                     <div>
                         <button type="submit" class="btn btn-danger">Cadastrar vinho</button>
@@ -99,6 +100,18 @@
                 </form>
             </div>
             <% }%>
+
+            <script type='text/javascript'>
+                function encodeImageFileAsURL(element) {
+              
+                    var file = element.files[0];
+                    var reader = new FileReader();
+                    reader.onloadend = function() {
+                        document.getElementById("photo_wine").setAttribute('value',reader.result )
+                    }
+                    reader.readAsDataURL(file);
+                }
+              </script>
 </body>
 
 </html>
