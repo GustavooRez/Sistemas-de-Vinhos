@@ -415,8 +415,7 @@ router.get("/", function (req, res, next) {
 
 router.post("/", function (req, res, next) {
   var conditions = {
-    $and: [],
-    $or: [],
+    $and: []
   };
 
   if (req.body.nome !== undefined && req.body.nome !== "") {
@@ -444,17 +443,11 @@ router.post("/", function (req, res, next) {
     req.body.nota !== "" &&
     req.body.nota !== "todas"
   ) {
-    for (let index = parseInt(req.body.nota); index <= 5; index++) {
-      conditions.$or.push({ nota: index });
-    }
+      conditions.$and.push({ nota: {$gte:req.body.nota} });
   }
 
   if (conditions.$and.length == 0) {
     delete conditions["$and"];
-  }
-
-  if (conditions.$or.length == 0) {
-    delete conditions["$or"];
   }
 
   Wines.find(conditions, function (erro_vinho, doc_vinho) {
