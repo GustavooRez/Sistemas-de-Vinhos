@@ -49,6 +49,7 @@
 <body>
     <div class="wine-page">
         <img src=<%=vinho.imagem%>>
+            <button style="margin: 1% 5% 0 0; float: right;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_imagem">Ver imagem completa</button>
         <div id="content" class="container">
             <h1 class="text-center">
                 <%=vinho.nome%>
@@ -109,7 +110,21 @@
                     <% } %>
 
         </div>
+        
     </div>
+    <div id="modal_imagem" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
+            data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="btn btn-danger" type="button" data-dismiss="modal">Fechar</button>
+                    </div>
+                    <div class="modal-body">
+                        <img style="width: 100%;" src=<%=vinho.imagem%>>
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 
 </html>
